@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BuildMaster ERP — Construction Management Demo
+
+Interactive UI prototype for a modern Construction ERP platform. This demo uses mock data and fake authentication — no production backend.
+
+## Tech Stack
+
+- **Next.js 16** (App Router)
+- **React 19**
+- **TypeScript**
+- **Tailwind CSS v4**
+- **shadcn/ui**
+- **GSAP** & **Framer Motion** (animations)
+- **TanStack Table**
+- **Recharts**
+- **Lucide Icons**
+- **next-themes** (dark mode)
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Demo Login
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Field    | Value                   |
+|----------|-------------------------|
+| Email    | `admin@buildmaster.com` |
+| Password | `demo123`               |
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+app/
+  (auth)/login/          # Login page
+  (dashboard)/           # Protected app routes
+    dashboard/
+    projects/
+    inventory/
+    purchase/
+    dpr/
+    labour/
+    machinery/
+    analytics/
+    client/
+    settings/
+components/
+  dashboard/             # Dashboard-specific components
+  layout/                # Shell, sidebar, header
+  providers/             # Theme & auth providers
+  ui/                    # shadcn/ui primitives
+data/                    # Mock data (projects, materials, etc.)
+hooks/                   # Custom React hooks
+lib/                     # Utilities, auth, formatters
+types/                   # Shared TypeScript types
+public/                  # Static assets
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Demo Flow
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Login → Dashboard → Projects → Project Details → Inventory → Purchase Orders → DPR → Labour → Analytics → Client Portal
 
-## Deploy on Vercel
+## Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Command       | Description              |
+|---------------|--------------------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Production build       |
+| `npm run start` | Start production server |
+| `npm run lint`  | Run ESLint             |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Team Modules
+
+| Developer | Modules                              |
+|-----------|--------------------------------------|
+| Dev 1     | Dashboard, Analytics, Authentication |
+| Dev 2     | Projects, Inventory, Purchase        |
+| Dev 3     | DPR, Labour, Machinery, UI Polish    |
+
+## Brand Colors
+
+| Token     | Hex       |
+|-----------|-----------|
+| Primary   | `#0F172A` |
+| Secondary | `#2563EB` |
+| Success   | `#10B981` |
+| Warning   | `#F59E0B` |
+| Danger    | `#EF4444` |
+| Background| `#F8FAFC` |
+
+## Notes
+
+- All API calls are simulated via `lib/mock-api.ts`
+- Auth is cookie-based mock auth for demo routing only
+- See `description.md` for the full project plan and presentation script
