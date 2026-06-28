@@ -12,9 +12,11 @@ import type { Vendor, VendorStats } from "@/types";
 type VendorsViewProps = {
   vendors: Vendor[];
   stats: VendorStats;
+  onEditVendor?: (vendor: Vendor) => void;
+  onDeleteVendor?: (vendor: Vendor) => void;
 };
 
-export function VendorsView({ vendors, stats }: VendorsViewProps) {
+export function VendorsView({ vendors, stats, onEditVendor, onDeleteVendor }: VendorsViewProps) {
   const [query, setQuery] = useState("");
 
   const filteredVendors = useMemo(() => {
@@ -80,7 +82,11 @@ export function VendorsView({ vendors, stats }: VendorsViewProps) {
           </CardContent>
         </Card>
       ) : (
-        <VendorCards vendors={filteredVendors} />
+        <VendorCards
+          vendors={filteredVendors}
+          onEdit={onEditVendor}
+          onDelete={onDeleteVendor}
+        />
       )}
     </div>
   );

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { type ColumnDef } from "@tanstack/react-table";
 
+import { withActionsColumn } from "@/components/crud/crud-columns";
 import { MaterialImage } from "@/components/inventory/material-image";
 import { DataTable } from "@/components/ui/data-table";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -10,7 +11,7 @@ import { formatCurrency, formatNumber } from "@/lib/formatters";
 import { getStockStatus } from "@/lib/status-colors";
 import type { Material } from "@/types";
 
-const columns: ColumnDef<Material>[] = [
+const baseColumns: ColumnDef<Material>[] = [
   {
     id: "image",
     header: "Image",
@@ -103,9 +104,14 @@ const columns: ColumnDef<Material>[] = [
 
 type MaterialsTableProps = {
   data: Material[];
+  onEdit?: (material: Material) => void;
+  onDelete?: (material: Material) => void;
 };
 
-export function MaterialsTable({ data }: MaterialsTableProps) {
+export function MaterialsTable({ data, onEdit, onDelete }: MaterialsTableProps) {
+  const columns =
+    onEdit && onDelete ? withActionsColumn(baseColumns, onEdit, onDelete) : baseColumns;
+
   return (
     <DataTable columns={columns} data={data} emptyMessage="No materials found in inventory." />
   );

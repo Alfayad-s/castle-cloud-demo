@@ -1,14 +1,5 @@
-import {
-  getAttendanceOverviewStats,
-  getCalendarMonth,
-  getMonthlyAttendanceRows,
-  getSiteAttendanceToday,
-  getTodaysAttendance,
-  getWeeklyAttendance,
-  monthlySummary,
-} from "@/data/attendance";
 import { PageShell } from "@/components/layout/page-shell";
-import { AttendanceView } from "@/components/attendance/attendance-view";
+import { AttendancePageClient } from "@/components/attendance/attendance-page-client";
 
 export default function AttendancePage() {
   return (
@@ -17,15 +8,7 @@ export default function AttendancePage() {
       description="Track daily, weekly, and monthly workforce attendance across all sites."
       breadcrumbs={[{ label: "Attendance" }]}
     >
-      <AttendanceView
-        stats={getAttendanceOverviewStats()}
-        todaysAttendance={getTodaysAttendance()}
-        siteAttendance={getSiteAttendanceToday()}
-        weeklyAttendance={getWeeklyAttendance()}
-        monthlyRows={getMonthlyAttendanceRows()}
-        calendarDays={getCalendarMonth()}
-        monthlySummary={monthlySummary}
-      />
+      <AttendancePageClient />
     </PageShell>
   );
 }

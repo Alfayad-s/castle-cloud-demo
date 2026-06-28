@@ -45,6 +45,8 @@ type MachineryViewProps = {
   machineTypeBreakdown: { type: string; count: number }[];
   weeklyMachineHours: { day: string; hours: number }[];
   fuelLevelByMachine: { name: string; fuel: number }[];
+  onEditMachine?: (machine: Machine) => void;
+  onDeleteMachine?: (machine: Machine) => void;
 };
 
 const PIE_COLORS = ["#2563EB", "#10B981", "#F59E0B", "#8B5CF6", "#EF4444", "#64748B", "#06B6D4", "#EC4899", "#84CC16"];
@@ -69,6 +71,8 @@ export function MachineryView({
   machineTypeBreakdown,
   weeklyMachineHours,
   fuelLevelByMachine,
+  onEditMachine,
+  onDeleteMachine,
 }: MachineryViewProps) {
   return (
     <div className="flex flex-col gap-6">
@@ -112,7 +116,7 @@ export function MachineryView({
         </TabsContent>
 
         <TabsContent value="equipment" className="mt-4">
-          <MachinesTable data={machines} />
+          <MachinesTable data={machines} onEdit={onEditMachine} onDelete={onDeleteMachine} />
         </TabsContent>
 
         <TabsContent value="alerts" className="mt-4">

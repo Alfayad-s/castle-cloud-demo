@@ -39,6 +39,8 @@ type PurchaseViewProps = {
     completed: number;
   }[];
   vendorSpend: { vendor: string; value: number }[];
+  onEditOrder?: (order: PurchaseOrder) => void;
+  onDeleteOrder?: (order: PurchaseOrder) => void;
 };
 
 const VENDOR_COLORS = ["#2563EB", "#10B981", "#F59E0B", "#8B5CF6"];
@@ -54,6 +56,8 @@ export function PurchaseView({
   stats,
   statusTrend,
   vendorSpend,
+  onEditOrder,
+  onDeleteOrder,
 }: PurchaseViewProps) {
   return (
     <div className="flex flex-col gap-6">
@@ -87,7 +91,11 @@ export function PurchaseView({
         </TabsList>
 
         <TabsContent value="orders" className="mt-4">
-          <PurchaseOrdersTable data={orders} />
+          <PurchaseOrdersTable
+            data={orders}
+            onEdit={onEditOrder}
+            onDelete={onDeleteOrder}
+          />
         </TabsContent>
 
         <TabsContent value="analytics" className="mt-4">

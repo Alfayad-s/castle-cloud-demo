@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { type ColumnDef } from "@tanstack/react-table";
 
+import { withActionsColumn } from "@/components/crud/crud-columns";
 import { DataTable } from "@/components/ui/data-table";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { formatCurrency } from "@/lib/formatters";
 import { ATTENDANCE_STATUS_CONFIG } from "@/lib/status-colors";
 import type { Employee } from "@/types";
 
-const columns: ColumnDef<Employee>[] = [
+const baseColumns: ColumnDef<Employee>[] = [
   {
     accessorKey: "name",
     header: "Employee",
@@ -112,12 +113,15 @@ const columns: ColumnDef<Employee>[] = [
 
 type EmployeesTableProps = {
   data: Employee[];
+  onEdit?: (employee: Employee) => void;
+  onDelete?: (employee: Employee) => void;
 };
 
-export function EmployeesTable({ data }: EmployeesTableProps) {
-  return (
-    <DataTable columns={columns} data={data} emptyMessage="No employees found." />
-  );
+export function EmployeesTable({ data, onEdit, onDelete }: EmployeesTableProps) {
+  const columns =
+    onEdit && onDelete ? withActionsColumn(baseColumns, onEdit, onDelete) : baseColumns;
+
+  return <DataTable columns={columns} data={data} emptyMessage="No employees found." />;
 }
 
 export function EmployeeAvatar({ name, size = "md" }: { name: string; size?: "sm" | "md" | "lg" }) {

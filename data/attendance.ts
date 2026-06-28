@@ -77,14 +77,16 @@ function getEmployeeMonthlyStats(employeeId: string) {
   return { present, absent, late, off, workingDays, attendanceRate };
 }
 
-export function getAttendanceOverviewStats(): AttendanceOverviewStats {
-  const presentToday = employees.filter((e) => e.attendanceToday === "present").length;
-  const absentToday = employees.filter((e) => e.attendanceToday === "absent").length;
-  const lateToday = employees.filter((e) => e.attendanceToday === "late").length;
-  const total = employees.length;
+export function getAttendanceOverviewStats(
+  sourceEmployees: Employee[] = employees,
+): AttendanceOverviewStats {
+  const presentToday = sourceEmployees.filter((e) => e.attendanceToday === "present").length;
+  const absentToday = sourceEmployees.filter((e) => e.attendanceToday === "absent").length;
+  const lateToday = sourceEmployees.filter((e) => e.attendanceToday === "late").length;
+  const total = sourceEmployees.length;
   const attendanceRate = Math.round(((presentToday + lateToday) / total) * 100);
 
-  const monthlyRows = getMonthlyAttendanceRows();
+  const monthlyRows = getMonthlyAttendanceRows(sourceEmployees);
   const monthlyAvgRate = Math.round(
     monthlyRows.reduce((sum, row) => sum + row.attendanceRate, 0) / monthlyRows.length,
   );
@@ -99,18 +101,18 @@ export function getAttendanceOverviewStats(): AttendanceOverviewStats {
   };
 }
 
-export function getTodaysAttendance(): Employee[] {
-  return [...employees].sort((a, b) => {
+export function getTodaysAttendance(sourceEmployees: Employee[] = employees): Employee[] {
+  return [...sourceEmployees].sort((a, b) => {
     const order: Record<AttendanceStatus, number> = { absent: 0, late: 1, present: 2 };
     return order[a.attendanceToday] - order[b.attendanceToday];
   });
 }
 
-export function getSiteAttendanceToday(): SiteAttendanceToday[] {
-  const sites = [...new Set(employees.map((e) => e.site))];
+export function getSiteAttendanceToday(sourceEmployees: Employee[] = employees): SiteAttendanceToday[] {
+  const sites = [...new Set(sourceEmployees.map((e) => e.site))];
 
   return sites.map((site) => {
-    const siteEmployees = employees.filter((e) => e.site === site);
+    const siteEmployees = sourceEmployees.filter((e) => e.site === site);
     const present = siteEmployees.filter((e) => e.attendanceToday === "present").length;
     const absent = siteEmployees.filter((e) => e.attendanceToday === "absent").length;
     const late = siteEmployees.filter((e) => e.attendanceToday === "late").length;
@@ -130,8 +132,8 @@ export function getWeeklyAttendance() {
   return labourWeeklyAttendance;
 }
 
-export function getMonthlyAttendanceRows(): MonthlyAttendanceRow[] {
-  return employees.map((employee) => {
+export function getMonthlyAttendanceRows(sourceEmployees: Employee[] = employees): MonthlyAttendanceRow[] {
+  return sourceEmployees.map((employee) => {
     const stats = getEmployeeMonthlyStats(employee.id);
     return {
       employeeId: employee.id,
@@ -190,10 +192,11 @@ export function getCalendarMonthLabel(year = CALENDAR_YEAR, month = CALENDAR_MON
 
 export function getSelectedDayEmployees(
   day: CalendarDaySummary,
+  sourceEmployees: Employee[] = employees,
 ): Array<Employee & { status: AttendanceStatus | "off" }> {
   if (day.isFuture) return [];
 
-  return employees.map((employee, index) => {
+  return sourceEmployees.map((employee, index) => {
     const seed = (day.dayOfMonth + index + employee.name.length) % 10;
     let status: AttendanceStatus | "off" = "present";
     if (day.isWeekend && seed < 3) status = "off";

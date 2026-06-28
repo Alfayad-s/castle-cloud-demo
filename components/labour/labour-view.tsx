@@ -42,6 +42,8 @@ type LabourViewProps = {
   siteWorkforce: { site: string; workers: number; staff: number }[];
   weeklyAttendance: { day: string; present: number; absent: number; late: number }[];
   designationBreakdown: { designation: string; count: number }[];
+  onEditEmployee?: (employee: Employee) => void;
+  onDeleteEmployee?: (employee: Employee) => void;
 };
 
 const PIE_COLORS = ["#2563EB", "#10B981", "#F59E0B", "#8B5CF6", "#EF4444", "#64748B"];
@@ -59,6 +61,8 @@ export function LabourView({
   siteWorkforce,
   weeklyAttendance,
   designationBreakdown,
+  onEditEmployee,
+  onDeleteEmployee,
 }: LabourViewProps) {
   return (
     <div className="flex flex-col gap-6">
@@ -84,7 +88,11 @@ export function LabourView({
         </TabsList>
 
         <TabsContent value="employees" className="mt-4">
-          <EmployeesTable data={employees} />
+          <EmployeesTable
+            data={employees}
+            onEdit={onEditEmployee}
+            onDelete={onDeleteEmployee}
+          />
         </TabsContent>
 
         <TabsContent value="payroll" className="mt-4">

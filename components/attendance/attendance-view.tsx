@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import {
   CalendarDays,
   Clock3,
+  Pencil,
   UserCheck,
   UserMinus,
   Users,
@@ -20,6 +21,8 @@ import {
   YAxis,
 } from "recharts";
 
+import { RowActions } from "@/components/crud/row-actions";
+import { Button } from "@/components/ui/button";
 import { EmployeeAvatar } from "@/components/labour/employees-table";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -45,7 +48,7 @@ import {
 } from "@/data/attendance";
 import { formatDate, formatPercent } from "@/lib/formatters";
 import { ATTENDANCE_STATUS_CONFIG } from "@/lib/status-colors";
-import type { Employee } from "@/types";
+import type { AttendanceLog, Employee } from "@/types";
 import { cn } from "@/lib/utils";
 
 type AttendanceViewProps = {
@@ -64,6 +67,10 @@ type AttendanceViewProps = {
     bestSite: string;
     bestSiteRate: number;
   };
+  attendanceLogs?: AttendanceLog[];
+  onEditEmployee?: (employee: Employee) => void;
+  onDeleteEmployee?: (employee: Employee) => void;
+  onEditLog?: (log: AttendanceLog) => void;
 };
 
 const tooltipStyle = {
@@ -82,6 +89,10 @@ export function AttendanceView({
   monthlyRows,
   calendarDays,
   monthlySummary,
+  attendanceLogs = [],
+  onEditEmployee,
+  onDeleteEmployee,
+  onEditLog,
 }: AttendanceViewProps) {
   const [selectedDay, setSelectedDay] = useState<CalendarDaySummary | null>(
     calendarDays.find((d) => d.isToday) ?? null,
@@ -91,8 +102,8 @@ export function AttendanceView({
   const monthLabel = getCalendarMonthLabel();
 
   const selectedDayEmployees = useMemo(
-    () => (selectedDay ? getSelectedDayEmployees(selectedDay) : []),
-    [selectedDay],
+    () => (selectedDay ? getSelectedDayEmployees(selectedDay, todaysAttendance) : []),
+    [selectedDay, todaysAttendance],
   );
 
   return (
@@ -117,6 +128,7 @@ export function AttendanceView({
           <TabsTrigger value="today">Today&apos;s Attendance</TabsTrigger>
           <TabsTrigger value="weekly">Weekly Attendance</TabsTrigger>
           <TabsTrigger value="monthly">Monthly Attendance</TabsTrigger>
+          <TabsTrigger value="logs">Attendance Logs</TabsTrigger>
         </TabsList>
 
         <TabsContent value="calendar" className="mt-4">
@@ -240,7 +252,10 @@ export function AttendanceView({
                       <TableHead className="pl-6">Employee</TableHead>
                       <TableHead>Designation</TableHead>
                       <TableHead>Site</TableHead>
-                      <TableHead className="pr-6">Status</TableHead>
+                      <TableHead className={onEditEmployee ? "" : "pr-6"}>Status</TableHead>
+                      {onEditEmployee && onDeleteEmployee ? (
+                        <TableHead className="w-12 pr-6" />
+                      ) : null}
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -257,12 +272,20 @@ export function AttendanceView({
                         </TableCell>
                         <TableCell>{employee.designation}</TableCell>
                         <TableCell className="text-muted-foreground">{employee.site}</TableCell>
-                        <TableCell className="pr-6">
+                        <TableCell className={onEditEmployee ? "" : "pr-6"}>
                           <StatusBadge
                             config={ATTENDANCE_STATUS_CONFIG[employee.attendanceToday]}
                             size="sm"
                           />
                         </TableCell>
+                        {onEditEmployee && onDeleteEmployee ? (
+                          <TableCell className="pr-6">
+                            <RowActions
+                              onEdit={() => onEditEmployee(employee)}
+                              onDelete={() => onDeleteEmployee(employee)}
+                            />
+                          </TableCell>
+                        ) : null}
                       </TableRow>
                     ))}
                   </TableBody>
@@ -423,6 +446,73 @@ export function AttendanceView({
                   ))}
                 </TableBody>
               </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="logs" className="mt-4">
+          <Card className="rounded-xl shadow-sm">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base">Attendance Logs</CardTitle>
+              <CardDescription>
+                Create and update logs saved in browser localStorage only
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-0 pb-2">
+              {attendanceLogs.length === 0 ? (
+                <p className="px-6 py-10 text-center text-sm text-muted-foreground">
+                  No attendance logs yet. Use &quot;Log Attendance&quot; to create one.
+                </p>
+              ) : (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="pl-6">Employee</TableHead>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Check-in</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Note</TableHead>
+                      {onEditLog ? <TableHead className="w-12 pr-6" /> : null}
+                      <TableHead className={onEditLog ? "" : "pr-6 text-right"}>Updated</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {[...attendanceLogs]
+                      .sort((a, b) => b.date.localeCompare(a.date) || b.updatedAt.localeCompare(a.updatedAt))
+                      .map((log) => (
+                        <TableRow key={log.id}>
+                          <TableCell className="pl-6 font-medium">{log.employeeName}</TableCell>
+                          <TableCell className="tabular-nums text-muted-foreground">
+                            {formatDate(log.date)}
+                          </TableCell>
+                          <TableCell className="tabular-nums">{log.checkIn ?? "—"}</TableCell>
+                          <TableCell>
+                            <StatusBadge config={ATTENDANCE_STATUS_CONFIG[log.status]} size="sm" />
+                          </TableCell>
+                          <TableCell className="max-w-[180px] truncate text-muted-foreground">
+                            {log.note ?? "—"}
+                          </TableCell>
+                          {onEditLog ? (
+                            <TableCell className="pr-6">
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon-sm"
+                                onClick={() => onEditLog(log)}
+                                aria-label="Edit log"
+                              >
+                                <Pencil className="size-4" />
+                              </Button>
+                            </TableCell>
+                          ) : null}
+                          <TableCell className={`tabular-nums text-right text-xs text-muted-foreground ${onEditLog ? "" : "pr-6"}`}>
+                            {formatDate(log.updatedAt.slice(0, 10))}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              )}
             </CardContent>
           </Card>
         </TabsContent>

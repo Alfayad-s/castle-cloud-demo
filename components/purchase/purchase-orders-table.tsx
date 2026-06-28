@@ -4,6 +4,7 @@ import Link from "next/link";
 import { type ColumnDef } from "@tanstack/react-table";
 import { FileText } from "lucide-react";
 
+import { withActionsColumn } from "@/components/crud/crud-columns";
 import { DataTable } from "@/components/ui/data-table";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { formatCurrency, formatDate } from "@/lib/formatters";
@@ -11,7 +12,7 @@ import { PO_STATUS_CONFIG } from "@/lib/status-colors";
 import { getGrandTotal } from "@/data/purchase-orders";
 import type { PurchaseOrder } from "@/types";
 
-const columns: ColumnDef<PurchaseOrder>[] = [
+const baseColumns: ColumnDef<PurchaseOrder>[] = [
   {
     accessorKey: "poNumber",
     header: "PO Number",
@@ -108,14 +109,15 @@ const columns: ColumnDef<PurchaseOrder>[] = [
 
 type PurchaseOrdersTableProps = {
   data: PurchaseOrder[];
+  onEdit?: (order: PurchaseOrder) => void;
+  onDelete?: (order: PurchaseOrder) => void;
 };
 
-export function PurchaseOrdersTable({ data }: PurchaseOrdersTableProps) {
+export function PurchaseOrdersTable({ data, onEdit, onDelete }: PurchaseOrdersTableProps) {
+  const columns =
+    onEdit && onDelete ? withActionsColumn(baseColumns, onEdit, onDelete) : baseColumns;
+
   return (
-    <DataTable
-      columns={columns}
-      data={data}
-      emptyMessage="No purchase orders found."
-    />
+    <DataTable columns={columns} data={data} emptyMessage="No purchase orders found." />
   );
 }

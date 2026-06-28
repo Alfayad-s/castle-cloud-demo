@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { type ColumnDef } from "@tanstack/react-table";
 
+import { withActionsColumn } from "@/components/crud/crud-columns";
 import { DataTable } from "@/components/ui/data-table";
 import { ProgressCell, StatusBadge } from "@/components/ui/status-badge";
 import { formatCurrency, formatDate } from "@/lib/formatters";
 import { PROJECT_STATUS_CONFIG } from "@/lib/status-colors";
 import type { Project } from "@/types";
 
-const columns: ColumnDef<Project>[] = [
+const baseColumns: ColumnDef<Project>[] = [
   {
     accessorKey: "name",
     header: "Project",
@@ -88,9 +89,16 @@ const columns: ColumnDef<Project>[] = [
 
 type ProjectsTableProps = {
   data: Project[];
+  onEdit?: (project: Project) => void;
+  onDelete?: (project: Project) => void;
 };
 
-export function ProjectsTable({ data }: ProjectsTableProps) {
+export function ProjectsTable({ data, onEdit, onDelete }: ProjectsTableProps) {
+  const columns =
+    onEdit && onDelete
+      ? withActionsColumn(baseColumns, onEdit, onDelete)
+      : baseColumns;
+
   return (
     <DataTable
       columns={columns}

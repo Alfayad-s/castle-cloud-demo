@@ -1,6 +1,5 @@
 import { PageShell } from "@/components/layout/page-shell";
-import { ProjectsTable } from "@/components/projects/projects-table";
-import { projects } from "@/data";
+import { ProjectsPageClient } from "@/components/projects/projects-page-client";
 
 export default function ProjectsPage() {
   return (
@@ -9,7 +8,7 @@ export default function ProjectsPage() {
       description="Manage construction projects, timelines, budgets, and milestones."
       breadcrumbs={[{ label: "Projects" }]}
     >
-      <ProjectsTable data={projects} />
+      <ProjectsPageClient />
     </PageShell>
   );
 }

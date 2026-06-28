@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { type ColumnDef } from "@tanstack/react-table";
 
+import { withActionsColumn } from "@/components/crud/crud-columns";
 import { DataTable } from "@/components/ui/data-table";
 import { MachineImage } from "@/components/machinery/machine-image";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -11,7 +12,7 @@ import { getFuelLevelTone, MACHINE_STATUS_CONFIG } from "@/lib/status-colors";
 import type { Machine } from "@/types";
 import { cn } from "@/lib/utils";
 
-const columns: ColumnDef<Machine>[] = [
+const baseColumns: ColumnDef<Machine>[] = [
   {
     accessorKey: "name",
     header: "Machine",
@@ -126,9 +127,14 @@ const columns: ColumnDef<Machine>[] = [
 
 type MachinesTableProps = {
   data: Machine[];
+  onEdit?: (machine: Machine) => void;
+  onDelete?: (machine: Machine) => void;
 };
 
-export function MachinesTable({ data }: MachinesTableProps) {
+export function MachinesTable({ data, onEdit, onDelete }: MachinesTableProps) {
+  const columns =
+    onEdit && onDelete ? withActionsColumn(baseColumns, onEdit, onDelete) : baseColumns;
+
   return (
     <DataTable columns={columns} data={data} emptyMessage="No machines found." />
   );

@@ -34,6 +34,8 @@ type InventoryViewProps = {
   warehouses: WarehouseType[];
   categoryStock: { category: string; value: number }[];
   weeklyConsumption: { day: string; cement: number; steel: number; sand: number }[];
+  onEditMaterial?: (material: Material) => void;
+  onDeleteMaterial?: (material: Material) => void;
 };
 
 const PIE_COLORS = ["#2563EB", "#10B981", "#F59E0B", "#8B5CF6", "#EF4444", "#06B6D4", "#F97316", "#64748B"];
@@ -51,6 +53,8 @@ export function InventoryView({
   warehouses,
   categoryStock,
   weeklyConsumption,
+  onEditMaterial,
+  onDeleteMaterial,
 }: InventoryViewProps) {
   return (
     <div className="flex flex-col gap-6">
@@ -93,7 +97,11 @@ export function InventoryView({
         </TabsList>
 
         <TabsContent value="materials" className="mt-4">
-          <MaterialsTable data={materials} />
+          <MaterialsTable
+            data={materials}
+            onEdit={onEditMaterial}
+            onDelete={onDeleteMaterial}
+          />
         </TabsContent>
 
         <TabsContent value="warehouses" className="mt-4">

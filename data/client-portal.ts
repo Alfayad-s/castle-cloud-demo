@@ -8,6 +8,7 @@ import type {
   ClientPortalStats,
   ClientProfile,
   ClientTimelineEvent,
+  Project,
 } from "@/types";
 
 export const demoClient: ClientProfile = {
@@ -242,26 +243,32 @@ export function getClientTimeline(): ClientTimelineEvent[] {
   );
 }
 
-export function getClientPortalStats(): ClientPortalStats {
-  const project = getProjectById(demoClient.projectId)!;
-  const paid = clientPayments.filter((p) => p.status === "paid");
-  const pending = clientPayments.filter((p) => p.status === "pending");
-  const nextPending = pending[0] ?? clientPayments.find((p) => p.status === "upcoming");
+export function getClientPortalStats(
+  payments: ClientPayment[] = clientPayments,
+  invoices: ClientInvoice[] = clientInvoices,
+  project: Project = getProjectById(demoClient.projectId)!,
+): ClientPortalStats {
+  const paid = payments.filter((p) => p.status === "paid");
+  const pending = payments.filter((p) => p.status === "pending");
+  const nextPending = pending[0] ?? payments.find((p) => p.status === "upcoming");
 
   return {
     progress: project.progress,
     totalContract: project.budget,
     amountPaid: paid.reduce((sum, p) => sum + p.amount, 0),
-    amountPending: clientPayments
+    amountPending: payments
       .filter((p) => p.status !== "paid")
       .reduce((sum, p) => sum + p.amount, 0),
     nextPaymentAmount: nextPending?.amount ?? 0,
     nextPaymentDate: nextPending?.dueDate ?? "—",
-    pendingInvoices: clientInvoices.filter((i) => i.status === "pending").length,
+    pendingInvoices: invoices.filter((i) => i.status === "pending").length,
   };
 }
 
-export function getClientProject() {
+export function getClientProject(projects?: Project[]) {
+  if (projects) {
+    return projects.find((project) => project.id === demoClient.projectId) ?? getProjectById(demoClient.projectId)!;
+  }
   return getProjectById(demoClient.projectId)!;
 }
 

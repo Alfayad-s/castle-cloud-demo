@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Building2, IndianRupee, Phone, Receipt, Star } from "lucide-react";
 
+import { RowActions } from "@/components/crud/row-actions";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/formatters";
 import type { Vendor } from "@/types";
@@ -10,19 +11,29 @@ import { cn } from "@/lib/utils";
 
 type VendorCardsProps = {
   vendors: Vendor[];
+  onEdit?: (vendor: Vendor) => void;
+  onDelete?: (vendor: Vendor) => void;
 };
 
-export function VendorCards({ vendors }: VendorCardsProps) {
+export function VendorCards({ vendors, onEdit, onDelete }: VendorCardsProps) {
   return (
     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
       {vendors.map((vendor) => (
-        <VendorCard key={vendor.id} vendor={vendor} />
+        <VendorCard key={vendor.id} vendor={vendor} onEdit={onEdit} onDelete={onDelete} />
       ))}
     </div>
   );
 }
 
-function VendorCard({ vendor }: { vendor: Vendor }) {
+function VendorCard({
+  vendor,
+  onEdit,
+  onDelete,
+}: {
+  vendor: Vendor;
+  onEdit?: (vendor: Vendor) => void;
+  onDelete?: (vendor: Vendor) => void;
+}) {
   const projectLabel =
     vendor.projects.length === 0
       ? "No projects"
@@ -31,8 +42,17 @@ function VendorCard({ vendor }: { vendor: Vendor }) {
         : `${vendor.projects.length} projects`;
 
   return (
-    <Link href={`/vendors/${vendor.id}`} className="group block">
-      <Card className="h-full rounded-xl shadow-sm transition-all hover:border-blue-300 hover:shadow-md dark:hover:border-blue-500/40">
+    <Card className="relative h-full rounded-xl shadow-sm transition-all hover:border-blue-300 hover:shadow-md dark:hover:border-blue-500/40">
+      {onEdit && onDelete ? (
+        <div
+          className="absolute top-3 right-3 z-10"
+          onClick={(event) => event.stopPropagation()}
+          onKeyDown={(event) => event.stopPropagation()}
+        >
+          <RowActions onEdit={() => onEdit(vendor)} onDelete={() => onDelete(vendor)} />
+        </div>
+      ) : null}
+      <Link href={`/vendors/${vendor.id}`} className="group block">
         <CardContent className="flex flex-col gap-4 p-5">
           <div className="flex items-start justify-between gap-3">
             <div className="flex min-w-0 items-start gap-3">
@@ -67,8 +87,8 @@ function VendorCard({ vendor }: { vendor: Vendor }) {
             </p>
           ) : null}
         </CardContent>
-      </Card>
-    </Link>
+      </Link>
+    </Card>
   );
 }
 

@@ -58,6 +58,8 @@ type DprViewProps = {
     sand: number;
     hours: number;
   };
+  onEditReport?: (report: DailyProgressReport) => void;
+  onDeleteReport?: (report: DailyProgressReport) => void;
 };
 
 const tooltipStyle = {
@@ -77,6 +79,8 @@ export function DprView({
   siteWorkerSummary,
   dprSubmissionTrend,
   weeklyTotals,
+  onEditReport,
+  onDeleteReport,
 }: DprViewProps) {
   return (
     <div className="flex flex-col gap-6">
@@ -122,7 +126,7 @@ export function DprView({
         </TabsList>
 
         <TabsContent value="reports" className="mt-4">
-          <DprTable data={reports} />
+          <DprTable data={reports} onEdit={onEditReport} onDelete={onDeleteReport} />
         </TabsContent>
 
         <TabsContent value="timeline" className="mt-4">

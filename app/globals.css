@@ -223,6 +223,57 @@
   .animate-testimonial-marquee {
     animation: testimonialMarquee 55s linear infinite;
   }
+
+  .splash-screen {
+    background: radial-gradient(
+        ellipse 80% 60% at 50% 40%,
+        rgba(187, 145, 61, 0.12) 0%,
+        transparent 65%
+      ),
+      linear-gradient(165deg, #0f172a 0%, #1e293b 48%, #0f172a 100%);
+  }
+
+  .splash-screen-glow {
+    background: radial-gradient(
+      circle at 50% 45%,
+      rgba(187, 145, 61, 0.08) 0%,
+      transparent 50%
+    );
+  }
+
+  .splash-screen-exit {
+    animation: splashScreenExit 700ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  .splash-logo-enter {
+    animation: splashLogoEnter 900ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .splash-logo-exit {
+    animation: splashLogoExit 700ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  .splash-tagline-enter {
+    animation: splashTaglineEnter 900ms cubic-bezier(0.22, 1, 0.36, 1) 200ms forwards;
+    opacity: 0;
+  }
+
+  .splash-tagline-exit {
+    animation: splashTaglineExit 500ms ease-out forwards;
+  }
+
+  .splash-loader-enter {
+    animation: splashTaglineEnter 900ms cubic-bezier(0.22, 1, 0.36, 1) 450ms forwards;
+    opacity: 0;
+  }
+
+  .splash-loader-enter span {
+    animation: splashDotPulse 1.2s ease-in-out infinite;
+  }
+
+  .splash-loader-exit {
+    animation: splashTaglineExit 400ms ease-out forwards;
+  }
 }
 
 @keyframes fadeSlideIn {
@@ -246,5 +297,64 @@
     opacity: 1;
     filter: blur(0px);
     transform: translateY(0px) scale(1);
+  }
+}
+
+@keyframes splashScreenExit {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes splashLogoEnter {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.92);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes splashLogoExit {
+  to {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.96);
+    filter: blur(6px);
+  }
+}
+
+@keyframes splashTaglineEnter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes splashTaglineExit {
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes splashDotPulse {
+  0%,
+  80%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.85);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1);
   }
 }

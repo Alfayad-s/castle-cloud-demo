@@ -129,6 +129,20 @@ export type Vendor = {
   rating: number;
 };
 
+export type AttendanceLog = {
+  id: string;
+  employeeId: string;
+  employeeName: string;
+  date: string;
+  status: AttendanceStatus;
+  checkIn?: string;
+  note?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type VendorSeed = Omit<Vendor, "balance" | "projects">;
+
 export type VendorStats = {
   totalVendors: number;
   activeProjects: number;

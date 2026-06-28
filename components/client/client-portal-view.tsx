@@ -28,6 +28,7 @@ import {
   YAxis,
 } from "recharts";
 
+import { RowActions } from "@/components/crud/row-actions";
 import { ProgressCell, StatusBadge } from "@/components/ui/status-badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -77,6 +78,12 @@ type ClientPortalViewProps = {
   photos: ClientPhoto[];
   timeline: ClientTimelineEvent[];
   progressTimeline: { month: string; progress: number }[];
+  onEditPayment?: (payment: ClientPayment) => void;
+  onDeletePayment?: (payment: ClientPayment) => void;
+  onEditInvoice?: (invoice: ClientInvoice) => void;
+  onDeleteInvoice?: (invoice: ClientInvoice) => void;
+  onEditDocument?: (document: ClientDocument) => void;
+  onDeleteDocument?: (document: ClientDocument) => void;
 };
 
 const tooltipStyle = {
@@ -110,6 +117,12 @@ export function ClientPortalView({
   photos,
   timeline,
   progressTimeline,
+  onEditPayment,
+  onDeletePayment,
+  onEditInvoice,
+  onDeleteInvoice,
+  onEditDocument,
+  onDeleteDocument,
 }: ClientPortalViewProps) {
   return (
     <div className="flex flex-col gap-6">
@@ -350,7 +363,8 @@ export function ClientPortalView({
                     <TableHead>Amount</TableHead>
                     <TableHead>Due Date</TableHead>
                     <TableHead>Paid Date</TableHead>
-                    <TableHead className="pr-6">Status</TableHead>
+                    <TableHead className={onEditPayment ? "" : "pr-6"}>Status</TableHead>
+                    {onEditPayment && onDeletePayment ? <TableHead className="w-12 pr-6" /> : null}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -364,9 +378,17 @@ export function ClientPortalView({
                       <TableCell className="tabular-nums text-muted-foreground">
                         {payment.paidDate ? formatDate(payment.paidDate) : "—"}
                       </TableCell>
-                      <TableCell className="pr-6">
+                      <TableCell className={onEditPayment ? "" : "pr-6"}>
                         <StatusBadge config={PAYMENT_STATUS_CONFIG[payment.status]} size="sm" />
                       </TableCell>
+                      {onEditPayment && onDeletePayment ? (
+                        <TableCell className="pr-6">
+                          <RowActions
+                            onEdit={() => onEditPayment(payment)}
+                            onDelete={() => onDeletePayment(payment)}
+                          />
+                        </TableCell>
+                      ) : null}
                     </TableRow>
                   ))}
                 </TableBody>
@@ -389,7 +411,8 @@ export function ClientPortalView({
                     <TableHead>Description</TableHead>
                     <TableHead>Amount</TableHead>
                     <TableHead>Due Date</TableHead>
-                    <TableHead className="pr-6">Status</TableHead>
+                    <TableHead className={onEditInvoice ? "" : "pr-6"}>Status</TableHead>
+                    {onEditInvoice && onDeleteInvoice ? <TableHead className="w-12 pr-6" /> : null}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -405,9 +428,17 @@ export function ClientPortalView({
                       <TableCell className="tabular-nums text-muted-foreground">
                         {formatDate(invoice.dueDate)}
                       </TableCell>
-                      <TableCell className="pr-6">
+                      <TableCell className={onEditInvoice ? "" : "pr-6"}>
                         <StatusBadge config={INVOICE_STATUS_CONFIG[invoice.status]} size="sm" />
                       </TableCell>
+                      {onEditInvoice && onDeleteInvoice ? (
+                        <TableCell className="pr-6">
+                          <RowActions
+                            onEdit={() => onEditInvoice(invoice)}
+                            onDelete={() => onDeleteInvoice(invoice)}
+                          />
+                        </TableCell>
+                      ) : null}
                     </TableRow>
                   ))}
                 </TableBody>
@@ -438,6 +469,12 @@ export function ClientPortalView({
                         {getDocumentTypeLabel(doc.type)} · {doc.size} · {formatDate(doc.uploadedAt)}
                       </p>
                     </div>
+                    {onEditDocument && onDeleteDocument ? (
+                      <RowActions
+                        onEdit={() => onEditDocument(doc)}
+                        onDelete={() => onDeleteDocument(doc)}
+                      />
+                    ) : null}
                     <button
                       type="button"
                       className={buttonVariants({ variant: "ghost", size: "sm" })}

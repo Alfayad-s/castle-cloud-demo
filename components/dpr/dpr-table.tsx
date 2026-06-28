@@ -4,13 +4,14 @@ import Link from "next/link";
 import { type ColumnDef } from "@tanstack/react-table";
 import { ClipboardList } from "lucide-react";
 
+import { withActionsColumn } from "@/components/crud/crud-columns";
 import { DataTable } from "@/components/ui/data-table";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { formatDate, formatNumber } from "@/lib/formatters";
 import { DPR_STATUS_CONFIG } from "@/lib/status-colors";
 import type { DailyProgressReport } from "@/types";
 
-const columns: ColumnDef<DailyProgressReport>[] = [
+const baseColumns: ColumnDef<DailyProgressReport>[] = [
   {
     accessorKey: "id",
     header: "Report",
@@ -105,9 +106,14 @@ const columns: ColumnDef<DailyProgressReport>[] = [
 
 type DprTableProps = {
   data: DailyProgressReport[];
+  onEdit?: (report: DailyProgressReport) => void;
+  onDelete?: (report: DailyProgressReport) => void;
 };
 
-export function DprTable({ data }: DprTableProps) {
+export function DprTable({ data, onEdit, onDelete }: DprTableProps) {
+  const columns =
+    onEdit && onDelete ? withActionsColumn(baseColumns, onEdit, onDelete) : baseColumns;
+
   return (
     <DataTable columns={columns} data={data} emptyMessage="No progress reports found." />
   );
