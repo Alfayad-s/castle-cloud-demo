@@ -14,7 +14,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-export const APP_NAME = "Castle Cloud Builders ERP";
+export const APP_NAME = "ERP Software";
 export const APP_TAGLINE = "Intelligent Construction Management Platform";
 export const APP_VERSION = "0.1.0-demo";
 

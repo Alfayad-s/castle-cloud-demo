@@ -53,7 +53,7 @@ export function AppSidebar() {
               <div className="flex aspect-square size-8 items-center justify-center overflow-hidden rounded-lg bg-transparent ">
                 <Image
                   src="/logo.svg"
-                  alt="Castle Cloud Builders"
+                  alt="ERP Software"
                   width={32}
                   height={32}
                   className="size-7 object-contain"
@@ -61,7 +61,7 @@ export function AppSidebar() {
                 />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">Castle Cloud Builders</span>
+                <span className="truncate font-semibold">ERP Software</span>
                 <span className="truncate text-xs text-muted-foreground">
                   {APP_TAGLINE}
                 </span>

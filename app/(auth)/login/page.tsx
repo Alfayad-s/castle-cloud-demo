@@ -3,7 +3,7 @@ import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata = createPageMetadata({
   title: "Sign In",
-  description: "Sign in to Castle Cloud Builders ERP to manage projects, inventory, and site operations.",
+  description: "Sign in to ERP Software to manage projects, inventory, and site operations.",
   path: "/login",
 });
 

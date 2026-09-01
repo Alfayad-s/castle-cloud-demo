@@ -42,7 +42,7 @@ export function SplashScreen() {
       className={cn("splash-screen fixed inset-0 z-[200] flex flex-col items-center justify-center overflow-hidden", isExiting && "splash-screen-exit")}
       role="status"
       aria-live="polite"
-      aria-label="Loading Castle Cloud Builders"
+      aria-label="Loading ERP Software"
     >
       <div className="splash-screen-glow pointer-events-none absolute inset-0" aria-hidden />
 
@@ -57,7 +57,7 @@ export function SplashScreen() {
           <div className="absolute -inset-8 rounded-full bg-[#BB913D]/20 blur-3xl" aria-hidden />
           <Image
             src="/logo-with-text.svg"
-            alt="Castle Cloud Builders"
+            alt="ERP Software"
             width={320}
             height={200}
             priority

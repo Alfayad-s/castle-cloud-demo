@@ -40,7 +40,7 @@ export type ActiveSession = {
 };
 
 export const companySettings: CompanySettings = {
-  name: "Castle Cloud Builders",
+  name: "ERP Software",
   tagline: APP_TAGLINE,
   email: "contact@castlecloudbuilders.com",
   phone: "+91 80 4567 8900",
