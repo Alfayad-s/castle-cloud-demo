@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-import { APP_TAGLINE } from "@/lib/site-config";
+import { APP_TAGLINE, COMPANY_NAME } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 
 const MIN_DISPLAY_MS = 2000;
@@ -42,7 +42,7 @@ export function SplashScreen() {
       className={cn("splash-screen fixed inset-0 z-[200] flex flex-col items-center justify-center overflow-hidden", isExiting && "splash-screen-exit")}
       role="status"
       aria-live="polite"
-      aria-label="Loading ERP Software"
+      aria-label={`Loading ${COMPANY_NAME}`}
     >
       <div className="splash-screen-glow pointer-events-none absolute inset-0" aria-hidden />
 
@@ -53,16 +53,19 @@ export function SplashScreen() {
           isExiting && "splash-logo-exit",
         )}
       >
-        <div className="relative">
+        <div className="relative flex flex-col items-center gap-5">
           <div className="absolute -inset-8 rounded-full bg-[#BB913D]/20 blur-3xl" aria-hidden />
           <Image
-            src="/logo-with-text.svg"
-            alt="ERP Software"
-            width={320}
-            height={200}
+            src="/logo.svg"
+            alt=""
+            width={96}
+            height={96}
             priority
-            className="relative h-auto w-[min(72vw,320px)] object-contain drop-shadow-[0_8px_32px_rgba(187,145,61,0.25)]"
+            className="relative size-20 object-contain drop-shadow-[0_8px_32px_rgba(187,145,61,0.25)] sm:size-24"
           />
+          <h1 className="relative text-center text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+            {COMPANY_NAME}
+          </h1>
         </div>
 
         <p
