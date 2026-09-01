@@ -24,7 +24,7 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
       <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-3">
           <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-          <p className="text-sm text-muted-foreground">Loading Castle Cloud Builders...</p>
+          <p className="text-sm text-muted-foreground">Loading ERP Software...</p>
         </div>
       </div>
     );
@@ -42,7 +42,7 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
           <div className="flex items-center gap-2 border-b px-4 py-2 md:hidden">
             <SidebarTrigger />
             <Separator orientation="vertical" className="mr-2 h-4" />
-            <span className="text-sm font-medium">Castle Cloud Builders</span>
+            <span className="text-sm font-medium">ERP Software</span>
           </div>
           <AppHeader />
           <main className="flex flex-1 flex-col overflow-auto">{children}</main>

@@ -1,19 +1,19 @@
-export const COMPANY_NAME = "Castle Cloud Builders";
+export const COMPANY_NAME = "ERP Software";
 
-export const APP_SHORT_NAME = "CCB ERP";
+export const APP_SHORT_NAME = "ERP Software";
 
-export const APP_NAME = `${COMPANY_NAME} ERP`;
+export const APP_NAME = COMPANY_NAME;
 
 export const APP_TAGLINE = "Intelligent Construction Management Platform";
 
 export const APP_DESCRIPTION =
-  "Castle Cloud Builders ERP helps construction teams manage projects, material inventory, purchase orders, labour, daily progress reports, machinery, and analytics — all in one modern cloud platform.";
+  "ERP Software helps construction teams manage projects, material inventory, purchase orders, labour, daily progress reports, machinery, and analytics — all in one modern cloud platform.";
 
 export const APP_DESCRIPTION_SHORT =
   "Modern ERP for construction project management, inventory, labour, and site operations.";
 
 export const SITE_KEYWORDS = [
-  "Castle Cloud Builders",
+  "ERP Software",
   "construction ERP",
   "construction management software",
   "project management",

@@ -1,7 +1,7 @@
 {
-  "name": "Castle Cloud Builders ERP",
-  "short_name": "CCB ERP",
-  "description": "Intelligent Construction Management Platform for Castle Cloud Builders",
+  "name": "ERP Software",
+  "short_name": "ERP Software",
+  "description": "Intelligent Construction Management Platform for ERP Software",
   "start_url": "/dashboard",
   "display": "standalone",
   "background_color": "#0F172A",

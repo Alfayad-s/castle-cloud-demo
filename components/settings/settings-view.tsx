@@ -573,7 +573,7 @@ export function SettingsView({
                 <Users className="size-4" />
                 Team Members
               </CardTitle>
-              <CardDescription>Users with access to this Castle Cloud Builders ERP instance</CardDescription>
+              <CardDescription>Users with access to this ERP Software instance</CardDescription>
             </CardHeader>
             <CardContent className="p-0 pb-2">
               <Table>
