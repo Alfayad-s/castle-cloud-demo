@@ -158,6 +158,14 @@
     @apply rounded-xl border border-white/10 bg-white/10 shadow-lg backdrop-blur-xl;
   }
 
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
   .custom-checkbox {
     @apply size-4 rounded border border-border accent-[#BB913D];
   }

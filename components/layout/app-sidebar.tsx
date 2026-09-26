@@ -181,8 +181,8 @@ export function AppHeader() {
   const { meta } = usePageMeta();
 
   return (
-    <header className="relative z-40 grid min-h-[4.5rem] shrink-0 grid-cols-[1fr_auto_1fr] items-center gap-x-4 border-b bg-background/80 px-6 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/60 lg:gap-x-6 lg:px-8">
-      <div className="min-w-0 justify-self-start space-y-0.5">
+    <header className="relative z-40 flex flex-wrap items-center justify-between gap-3 border-b bg-background/80 px-4 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:min-h-[4.5rem] md:grid md:grid-cols-[1fr_auto_1fr] md:gap-x-4 lg:gap-x-6 lg:px-8">
+      <div className="min-w-0 flex-1 md:justify-self-start space-y-0.5">
         <h1 className="truncate text-base font-semibold leading-none tracking-tight lg:text-lg">
           {meta.title}
         </h1>
@@ -193,11 +193,11 @@ export function AppHeader() {
         ) : null}
       </div>
 
-      <div className="w-[min(100vw-12rem,18rem)] shrink-0 sm:w-72 md:w-80 lg:w-[24rem]">
+      <div className="order-3 w-full shrink-0 md:order-none md:w-80 lg:w-[24rem]">
         <GlobalSearch />
       </div>
 
-      <div className="flex shrink-0 items-center justify-self-end gap-2 sm:gap-3">
+      <div className="flex shrink-0 items-center gap-2 md:justify-self-end sm:gap-3">
         <Badge variant="secondary" className="hidden sm:inline-flex">
           Demo Mode
         </Badge>
